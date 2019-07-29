@@ -13,9 +13,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import androidx.annotation.NonNull;
-import androidx.webkit.WebResourceErrorCompat;
-import androidx.webkit.WebViewClientCompat;
 import io.flutter.plugin.common.MethodChannel;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,12 +105,7 @@ class FlutterWebViewClient {
   // https://github.com/flutter/flutter/issues/29446.
   WebViewClient createWebViewClient(boolean hasNavigationDelegate) {
     this.hasNavigationDelegate = hasNavigationDelegate;
-
-    if (!hasNavigationDelegate || android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      return internalCreateWebViewClient();
-    }
-
-    return internalCreateWebViewClientCompat();
+    return internalCreateWebViewClient();
   }
 
   private WebViewClient internalCreateWebViewClient() {
@@ -162,61 +154,6 @@ class FlutterWebViewClient {
     };
   }
 
-  private WebViewClientCompat internalCreateWebViewClientCompat() {
-    return new WebViewClientCompat() {
-      @Override
-      public boolean shouldOverrideUrlLoading(
-          @NonNull WebView view, @NonNull WebResourceRequest request) {
-        return FlutterWebViewClient.this.shouldOverrideUrlLoading(view, request);
-      }
-
-      @Override
-      public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        return FlutterWebViewClient.this.shouldOverrideUrlLoading(view, url);
-      }
-
-      @Override
-      public void onPageFinished(WebView view, String url) {
-        FlutterWebViewClient.this.onPageFinished(view, url);
-      }
-
-      @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-      @Override
-      public void onReceivedHttpError(
-          @NonNull WebView view,
-          @NonNull WebResourceRequest request,
-          @NonNull WebResourceResponse errorResponse) {
-        FlutterWebViewClient.this.onReceiveError(
-            view, errorResponse.getStatusCode(), null, request.getUrl().toString());
-      }
-
-      @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-      @Override
-      public void onReceivedError(
-          @NonNull WebView view,
-          @NonNull WebResourceRequest request,
-          @NonNull WebResourceErrorCompat error) {
-        //TODO: is really need to check WebViewFeature.isFeatureSupported() and api version.
-        FlutterWebViewClient.this.onReceiveError(
-            view,
-            error.getErrorCode(),
-            error.getDescription().toString(),
-            request.getUrl().toString());
-      }
-
-      @SuppressWarnings("deprecation")
-      @Override
-      public void onReceivedError(
-          WebView view, int errorCode, String description, String failingUrl) {
-        FlutterWebViewClient.this.onReceiveError(view, errorCode, description, failingUrl);
-      }
-
-      @Override
-      public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        FlutterWebViewClient.this.onPageStarted(view, url);
-      }
-    };
-  }
 
   private static class OnNavigationRequestResult implements MethodChannel.Result {
     private final String url;
