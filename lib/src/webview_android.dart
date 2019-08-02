@@ -46,7 +46,7 @@ class AndroidWebView implements WebViewPlatform {
           onWebViewPlatformCreated(MethodChannelWebViewPlatform(
               id, webViewPlatformCallbacksHandler));
         },
-        gestureRecognizers: gestureRecognizers,
+//        gestureRecognizers: gestureRecognizers,
         // WebView content is not affected by the Android view's layout direction,
         // we explicitly set it here so that the widget doesn't require an ambient
         // directionality.
