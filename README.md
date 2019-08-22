@@ -8,6 +8,7 @@ On iOS the WebView widget is backed by a [WKWebView](https://developer.apple.com
 On Android the WebView widget is backed by a [WebView](https://developer.android.com/reference/android/webkit/WebView).
 
 ## Developers Preview Status
+
 The plugin relies on Flutter's new mechanism for embedding Android and iOS views.
 As that mechanism is currently in a developers preview, this plugin should also be
 considered a developers preview.
