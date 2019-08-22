@@ -156,6 +156,11 @@ abstract class WebViewPlatformController {
     throw UnimplementedError(
         "WebView removeJavascriptChannels is not implemented on the current platform");
   }
+
+  Future<Null> setCookies(String url, Map<String, String> cookies) {
+    throw UnimplementedError(
+        "WebView setCookies is not implemented on the current platform");
+  }
 }
 
 /// Settings for configuring a WebViewPlatform.

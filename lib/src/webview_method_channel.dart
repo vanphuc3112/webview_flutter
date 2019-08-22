@@ -146,4 +146,15 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
       'javascriptChannelNames': creationParams.javascriptChannelNames.toList(),
     };
   }
+
+  @override
+  Future<Null> setCookies(String url, Map<String, String> cookies) {
+    final args = <String, dynamic>{'url': url};
+    if (cookies != null) {
+      args['cookies'] = cookies;
+    }
+    return _cookieManagerChannel
+        .invokeMethod<bool>('setCookies', args)
+        .then<Null>((dynamic result) => result);
+  }
 }
