@@ -63,25 +63,29 @@
 - (void)webView:(WKWebView *)webView
     didFailNavigation:(WKNavigation *)navigation
             withError:(NSError *)error {
-  NSDictionary *arguments = @{
-    @"url" : webView.URL.absoluteString ?: [NSNull null],
-    @"code" : [NSNumber numberWithLong:error.code],
-    @"description" : [error localizedDescription],
-  };
-
-  [_methodChannel invokeMethod:@"onPageReceiveError" arguments:arguments];
+    if (error != nil) {
+        NSDictionary *arguments = @{
+                                    @"url" : webView.URL.absoluteString ?: [NSNull null],
+                                    @"code" : [NSNumber numberWithLong:error.code],
+                                    @"description" : [error localizedDescription],
+                                    };
+        
+        [_methodChannel invokeMethod:@"onPageReceiveError" arguments:arguments];
+    }
 }
 
 - (void)webView:(WKWebView *)webView
     didFailProvisionalNavigation:(WKNavigation *)navigation
                        withError:(NSError *)error {
-  NSDictionary *arguments = @{
-    @"url" : error.userInfo[NSURLErrorFailingURLStringErrorKey],
-    @"code" : [NSNumber numberWithLong:error.code],
-    @"description" : [error localizedDescription],
-  };
-
-  [_methodChannel invokeMethod:@"onPageReceiveError" arguments:arguments];
+    if (error != nil) {
+        NSDictionary *arguments = @{
+                                    @"url" : error.userInfo[NSURLErrorFailingURLStringErrorKey],
+                                    @"code" : [NSNumber numberWithLong:error.code],
+                                    @"description" : [error localizedDescription],
+                                    };
+        
+        [_methodChannel invokeMethod:@"onPageReceiveError" arguments:arguments];
+    }
 }
 
 - (void)webView:(WKWebView *)webView
