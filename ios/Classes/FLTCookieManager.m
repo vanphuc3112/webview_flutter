@@ -51,7 +51,7 @@
 - (void) setCookies:(FlutterMethodCall*)call {
     NSString *url = call.arguments[@"url"];
     NSDictionary *cookies = call.arguments[@"cookies"];
-    if (cookies != (id)[NSNull null]) {
+    if (cookies != nil && url != nil) {
         [cookies enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
             NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
             [cookieProperties setObject:key forKey:NSHTTPCookieName];
